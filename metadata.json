@@ -1,0 +1,5 @@
+{
+  "name": "i18nCheck.dev",
+  "description": "An internationalization (i18n) layout stress-testing tool using pseudo-localization.",
+  "requestFramePermissions": []
+}
