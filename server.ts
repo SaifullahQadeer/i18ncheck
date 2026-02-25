@@ -2,8 +2,12 @@ import express from 'express';
 import { createServer as createViteServer } from 'vite';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { URL } from 'url';
+import { URL, fileURLToPath } from 'url';
 import https from 'https';
+import path from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 async function startServer() {
   const app = express();
@@ -200,6 +204,9 @@ async function startServer() {
     }
   });
 
+  // Serve static files from React build
+  app.use(express.static(path.join(__dirname, 'dist')));
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
@@ -207,6 +214,11 @@ async function startServer() {
       appType: 'spa',
     });
     app.use(vite.middlewares);
+  } else {
+    // Catch-all: serve React app for any non-API route in production
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, 'dist/index.html'));
+    });
   }
 
   app.listen(PORT, '0.0.0.0', () => {
