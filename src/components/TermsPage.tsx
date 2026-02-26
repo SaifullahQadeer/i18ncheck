@@ -102,7 +102,7 @@ export default function TermsPage() {
                       <span className="text-[#06b6d4] mr-2">1.</span>Acceptance of Terms
                     </h2>
                     <p className="text-[#f1f5f9]/60 leading-relaxed">
-                      By accessing or using i18nCheck.dev and i18ncheck.com (the "Service"), operated by Alpha Web Creation LLC ("we", "our", "us"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Service.
+                      By accessing or using i18nCheck.dev and i18ncheck.dev (the "Service"), operated by Alpha Web Creation LLC ("we", "our", "us"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Service.
                     </p>
                   </section>
 
@@ -287,7 +287,7 @@ export default function TermsPage() {
                       For questions about these Terms, contact us at:
                     </p>
                     <ul className="space-y-2 text-[#f1f5f9]/60">
-                      <li>Email: <a href="mailto:contact@i18ncheck.com" className="text-[#06b6d4] hover:underline">contact@i18ncheck.com</a></li>
+                      <li>Email: <a href="mailto:contact@i18ncheck.dev" className="text-[#06b6d4] hover:underline">contact@i18ncheck.dev</a></li>
                       <li>Company: Alpha Web Creation LLC</li>
                       <li>Location: Wyoming, United States</li>
                     </ul>
