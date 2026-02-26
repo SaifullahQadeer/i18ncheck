@@ -396,15 +396,15 @@ export default function LandingPage() {
             <div>
               <h4 className="font-bold mb-6 text-[#f1f5f9]">Company</h4>
               <ul className="space-y-4 text-[#f1f5f9]/40 text-sm">
-                <li><a href="#" className="hover:text-[#06b6d4] transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-[#06b6d4] transition-colors">API</a></li>
-                <li><a href="#" className="hover:text-[#06b6d4] transition-colors">Changelog</a></li>
-                <li><a href="#" className="hover:text-[#06b6d4] transition-colors">Contact</a></li>
+                <li><Link to="/about" className="hover:text-[#06b6d4] transition-colors">About</Link></li>
+                <li><Link to="/contact" className="hover:text-[#06b6d4] transition-colors">Contact</Link></li>
+                <li><Link to="/privacy" className="hover:text-[#06b6d4] transition-colors">Privacy Policy</Link></li>
+                <li><Link to="/terms" className="hover:text-[#06b6d4] transition-colors">Terms of Service</Link></li>
               </ul>
             </div>
           </div>
           <div className="pt-8 border-t border-[#f1f5f9]/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#f1f5f9]/30">
-            <p>&copy; 2026 i18nCheck.dev • Privacy Policy • Terms of Service</p>
+            <p>&copy; 2026 i18nCheck.dev • <Link to="/privacy" className="hover:text-[#06b6d4] transition-colors">Privacy Policy</Link> • <Link to="/terms" className="hover:text-[#06b6d4] transition-colors">Terms of Service</Link></p>
           </div>
         </div>
       </footer>
