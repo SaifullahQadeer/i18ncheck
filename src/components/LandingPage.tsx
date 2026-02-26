@@ -83,7 +83,7 @@ export default function LandingPage() {
                 <div className="w-1 h-1 bg-[#f1f5f9]/20 rounded-full" />
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#06b6d4]" />
-                  <span>3 free checks/day</span>
+                  <span>5 free checks/day</span>
                 </div>
               </div>
             </motion.div>
@@ -233,7 +233,7 @@ export default function LandingPage() {
                 tier="FREE"
                 price="$0"
                 features={[
-                  "3 checks per day",
+                  "5 checks per day",
                   "German text expansion only",
                   "Basic before/after screenshots",
                   "Watermarked results"
