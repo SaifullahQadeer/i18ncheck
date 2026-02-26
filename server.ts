@@ -5,6 +5,10 @@ import * as cheerio from 'cheerio';
 import { URL, fileURLToPath } from 'url';
 import https from 'https';
 import path, { dirname } from 'path';
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -205,6 +209,54 @@ async function startServer() {
     } catch (error: any) {
       console.error('Proxy error:', error.message);
       res.status(500).send(`Error fetching URL: ${error.message}. Note: Some sites block automated requests.`);
+    }
+  });
+
+  // SMTP transporter for contact form
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST || 'smtp.hostinger.com',
+    port: parseInt(process.env.SMTP_PORT || '465', 10),
+    secure: true,
+    auth: {
+      user: process.env.SMTP_USER || '',
+      pass: process.env.SMTP_PASS || '',
+    },
+  });
+
+  // Contact form endpoint
+  app.post('/api/contact', async (req, res) => {
+    const { name, email, subject, message } = req.body;
+
+    if (!name || !email || !message) {
+      return res.status(400).json({ error: 'Name, email, and message are required.' });
+    }
+
+    try {
+      await transporter.sendMail({
+        from: `"i18nCheck Contact" <${process.env.SMTP_USER}>`,
+        to: process.env.CONTACT_EMAIL || process.env.SMTP_USER,
+        replyTo: email,
+        subject: `[i18nCheck Contact] ${subject || 'General Inquiry'} — from ${name}`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px;">
+            <h2 style="color: #0f172a;">New Contact Form Submission</h2>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr><td style="padding: 8px 0; color: #94a3b8; width: 100px;">Name</td><td style="padding: 8px 0; color: #0f172a; font-weight: 600;">${name}</td></tr>
+              <tr><td style="padding: 8px 0; color: #94a3b8;">Email</td><td style="padding: 8px 0;"><a href="mailto:${email}" style="color: #0f172a;">${email}</a></td></tr>
+              <tr><td style="padding: 8px 0; color: #94a3b8;">Subject</td><td style="padding: 8px 0; color: #0f172a;">${subject || 'General Inquiry'}</td></tr>
+            </table>
+            <div style="margin-top: 16px; padding: 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
+              <p style="color: #94a3b8; font-size: 12px; margin: 0 0 8px;">Message</p>
+              <p style="color: #0f172a; white-space: pre-wrap; margin: 0;">${message}</p>
+            </div>
+          </div>
+        `,
+      });
+
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error('Email send error:', error.message);
+      res.status(500).json({ error: 'Failed to send message. Please try again later.' });
     }
   });
 

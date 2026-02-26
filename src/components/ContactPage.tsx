@@ -9,6 +9,8 @@ export default function ContactPage() {
     window.scrollTo(0, 0);
   }, []);
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -16,10 +18,30 @@ export default function ContactPage() {
     message: '',
   });
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setForm({ name: '', email: '', subject: 'General Inquiry', message: '' });
+    setSending(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to send message.');
+      }
+
+      setSubmitted(true);
+      setForm({ name: '', email: '', subject: 'General Inquiry', message: '' });
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -141,11 +163,17 @@ export default function ContactPage() {
                       />
                     </div>
 
+                    {error && (
+                      <div className="p-3 bg-[#ef4444]/10 border border-[#ef4444]/20 rounded-xl text-[#ef4444] text-sm">
+                        {error}
+                      </div>
+                    )}
                     <button
                       type="submit"
-                      className="w-full py-4 bg-[#0f172a] hover:bg-[#1e293b] text-white font-bold rounded-xl transition-all text-lg"
+                      disabled={sending}
+                      className="w-full py-4 bg-[#0f172a] hover:bg-[#1e293b] text-white font-bold rounded-xl transition-all text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Send Message
+                      {sending ? 'Sending...' : 'Send Message'}
                     </button>
                   </form>
                 )}
