@@ -353,9 +353,9 @@ export default function LandingPage() {
               </p>
               <Link
                 to="/app"
-                className="px-12 py-4 bg-[#0f172a] hover:bg-[#1e293b] text-white font-bold rounded-xl transition-all text-lg"
+                className="inline-flex items-center gap-2 px-8 sm:px-12 py-4 bg-[#0f172a] hover:bg-[#1e293b] text-white font-bold rounded-xl transition-all text-base sm:text-lg whitespace-nowrap"
               >
-                Start Testing — It's Free <ArrowRight className="w-5 h-5 inline-block ml-2" />
+                Start Testing — It's Free <ArrowRight className="w-5 h-5 shrink-0" />
               </Link>
             </div>
           </div>
