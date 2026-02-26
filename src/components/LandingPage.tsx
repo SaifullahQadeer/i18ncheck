@@ -1,12 +1,9 @@
 import { useState, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Globe, ArrowRight, CheckCircle2, Layout, Languages, Flame, Zap, Building2, ShoppingCart, Monitor, Wrench, ChevronDown, ChevronUp, Check } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-interface LandingPageProps {
-  onStartTesting: () => void;
-}
-
-export default function LandingPage({ onStartTesting }: LandingPageProps) {
+export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const scrollToSection = (id: string) => {
@@ -21,22 +18,22 @@ export default function LandingPage({ onStartTesting }: LandingPageProps) {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a0e17]/80 backdrop-blur-md border-b border-[#f1f5f9]/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <Link to="/" className="flex items-center gap-2 cursor-pointer">
             <div className="bg-[#06b6d4] p-1.5 rounded-lg shadow-lg shadow-[#06b6d4]/20">
               <Globe className="w-6 h-6 text-[#0a0e17]" />
             </div>
             <span className="font-bold text-2xl tracking-tight text-[#f1f5f9]">i18nCheck.dev</span>
-          </div>
+          </Link>
           <nav className="hidden md:flex items-center gap-10 text-sm font-medium">
             <button onClick={() => scrollToSection('features')} className="text-[#f1f5f9]/70 hover:text-[#06b6d4] transition-colors">Features</button>
             <button onClick={() => scrollToSection('how-it-works')} className="text-[#f1f5f9]/70 hover:text-[#06b6d4] transition-colors">How it works</button>
             <button onClick={() => scrollToSection('pricing')} className="text-[#f1f5f9]/70 hover:text-[#06b6d4] transition-colors">Pricing</button>
-            <button 
-              onClick={onStartTesting}
+            <Link 
+              to="/app"
               className="px-5 py-2.5 bg-[#06b6d4] hover:bg-[#0891b2] text-[#0a0e17] font-bold rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg shadow-[#06b6d4]/20"
             >
               Try it now
-            </button>
+            </Link>
           </nav>
         </div>
       </header>
@@ -64,12 +61,12 @@ export default function LandingPage({ onStartTesting }: LandingPageProps) {
               </p>
               
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-                <button 
-                  onClick={onStartTesting}
+                <Link 
+                  to="/app"
                   className="w-full sm:w-auto px-10 py-4 bg-[#06b6d4] hover:bg-[#0891b2] text-[#0a0e17] font-bold rounded-xl transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2 text-lg shadow-xl shadow-[#06b6d4]/20"
                 >
                   Start Testing <ArrowRight className="w-5 h-5" />
-                </button>
+                </Link>
                 <button 
                   onClick={() => scrollToSection('features')}
                   className="w-full sm:w-auto px-10 py-4 bg-[#111827] hover:bg-[#1f2937] text-[#f1f5f9] font-bold rounded-xl border border-[#f1f5f9]/10 transition-all hover:scale-105 active:scale-95 text-lg"
@@ -242,7 +239,7 @@ export default function LandingPage({ onStartTesting }: LandingPageProps) {
                   "Watermarked results"
                 ]}
                 buttonText="Start Free"
-                onButtonClick={onStartTesting}
+                to="/app"
                 active={true}
               />
               <PricingCard 
@@ -362,12 +359,12 @@ export default function LandingPage({ onStartTesting }: LandingPageProps) {
               <p className="text-[#f1f5f9]/60 mb-10 text-lg relative z-10">
                 Join 500+ developers catching i18n bugs before their users do.
               </p>
-              <button 
-                onClick={onStartTesting}
+              <Link 
+                to="/app"
                 className="px-12 py-4 bg-[#06b6d4] hover:bg-[#0891b2] text-[#0a0e17] font-bold rounded-xl transition-all hover:scale-105 active:scale-95 text-lg relative z-10 shadow-xl shadow-[#06b6d4]/20"
               >
                 Start Testing — It's Free <ArrowRight className="w-5 h-5 inline-block ml-2" />
-              </button>
+              </Link>
             </div>
           </div>
         </section>
@@ -447,12 +444,12 @@ function WhoCard({ icon, title, description }: { icon: ReactNode, title: string,
   );
 }
 
-function PricingCard({ tier, price, features, buttonText, onButtonClick, active, popular }: { 
+function PricingCard({ tier, price, features, buttonText, to, active, popular }: { 
   tier: string, 
   price: string, 
   features: string[], 
   buttonText: string, 
-  onButtonClick?: () => void,
+  to?: string,
   active: boolean,
   popular?: boolean
 }) {
@@ -478,17 +475,29 @@ function PricingCard({ tier, price, features, buttonText, onButtonClick, active,
           </li>
         ))}
       </ul>
-      <button 
-        onClick={active ? onButtonClick : undefined}
-        disabled={!active}
-        className={`w-full py-4 rounded-xl font-bold transition-all ${
-          active 
-            ? 'bg-[#06b6d4] hover:bg-[#0891b2] text-[#0a0e17] shadow-lg shadow-[#06b6d4]/20' 
-            : 'bg-[#f1f5f9]/5 text-[#f1f5f9]/20 cursor-not-allowed'
-        }`}
-      >
-        {buttonText}
-      </button>
+      {to ? (
+        <Link 
+          to={to}
+          className={`w-full py-4 rounded-xl font-bold transition-all text-center ${
+            active 
+              ? 'bg-[#06b6d4] hover:bg-[#0891b2] text-[#0a0e17] shadow-lg shadow-[#06b6d4]/20' 
+              : 'bg-[#f1f5f9]/5 text-[#f1f5f9]/20 cursor-not-allowed'
+          }`}
+        >
+          {buttonText}
+        </Link>
+      ) : (
+        <button 
+          disabled={!active}
+          className={`w-full py-4 rounded-xl font-bold transition-all ${
+            active 
+              ? 'bg-[#06b6d4] hover:bg-[#0891b2] text-[#0a0e17] shadow-lg shadow-[#06b6d4]/20' 
+              : 'bg-[#f1f5f9]/5 text-[#f1f5f9]/20 cursor-not-allowed'
+          }`}
+        >
+          {buttonText}
+        </button>
+      )}
     </div>
   );
 }
