@@ -255,7 +255,7 @@ async function startServer() {
 
       res.json({ success: true });
     } catch (error: any) {
-      console.error('Email send error:', error.message);
+      console.error('Email send error:', error.code, error.message);
       res.status(500).json({ error: 'Failed to send message. Please try again later.' });
     }
   });
