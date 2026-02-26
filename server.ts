@@ -4,10 +4,10 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { URL, fileURLToPath } from 'url';
 import https from 'https';
-import path from 'path';
+import path, { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
 
 async function startServer() {
   const app = express();
@@ -26,10 +26,14 @@ async function startServer() {
 
     try {
       // 1. Fetch the external website
-      // Remove custom User-Agent and timeout to avoid potential blocking or rate limiting issues
+      // Add a User-Agent to avoid being blocked by some sites
       const response = await axios.get(targetUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (compatible; i18nCheck/1.0; +https://i18ncheck.dev)'
+        },
         responseType: 'text', // Ensure we get text/html
         httpsAgent: new https.Agent({ rejectUnauthorized: false }), // Allow self-signed certs
+        timeout: 10000 // 10s timeout
       });
 
       const html = response.data;
@@ -204,9 +208,6 @@ async function startServer() {
     }
   });
 
-  // Serve static files from React build
-  app.use(express.static(path.join(__dirname, 'dist')));
-
   // Vite middleware for development
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
@@ -214,12 +215,22 @@ async function startServer() {
       appType: 'spa',
     });
     app.use(vite.middlewares);
-  } else {
-    // Catch-all: serve React app for any non-API route in production
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, 'dist/index.html'));
-    });
   }
+
+  // Serve React frontend build files
+  const distPath = path.join(__dirname, 'dist');
+  app.use(express.static(distPath));
+
+  // Catch-all route: serve index.html for any non-API route (React Router support)
+  app.get('*', (req, res) => {
+    // Only serve index.html if it exists, otherwise let it fall through
+    res.sendFile(path.join(distPath, 'index.html'), (err) => {
+      if (err) {
+        // If index.html doesn't exist (e.g. build hasn't run), send a helpful message
+        res.status(404).send('Frontend build not found. Please run "npm run build" first.');
+      }
+    });
+  });
 
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on http://localhost:${PORT}`);
