@@ -8,7 +8,9 @@ export default function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/app" element={<Dashboard />} />
-        <Route path="/app/check/:id" element={<Dashboard />} /> {/* Placeholder for now */}
+        <Route path="/app/history" element={<Dashboard />} />
+        <Route path="/app/settings" element={<Dashboard />} />
+        <Route path="/app/check/:id" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );

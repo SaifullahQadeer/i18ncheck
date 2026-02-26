@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect, type FormEvent, type ReactNode } from 'react';
+import { useState, useRef, useEffect, type FormEvent, type ReactNode, type MouseEvent } from 'react';
 import { 
   Globe, ArrowRight, RefreshCw, AlertCircle, Check, Layout, Type, Languages, 
   Maximize2, Minimize2, Flame, ChevronDown, ChevronLeft, Search, Copy, 
   Download, Share2, Info, AlertTriangle, XCircle, CheckCircle2, ExternalLink,
-  Smartphone, Monitor, Tablet, MoreHorizontal, Home, History, Settings, Clock, Menu, X
+  Smartphone, Monitor, Tablet, MoreHorizontal, Home, History, Settings, Clock, Menu, X, Trash2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
@@ -29,8 +29,21 @@ export default function Dashboard() {
   const [showToast, setShowToast] = useState(false);
   const [recentChecks, setRecentChecks] = useState<CheckResult[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [usageCount, setUsageCount] = useState(2);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const location = useLocation();
+
+  const MAX_FREE_CHECKS = 3;
+
+  useEffect(() => {
+    if (isLoading) {
+      document.title = `i18nCheck — Checking ${url || 'website'}...`;
+    } else if (previewUrl) {
+      document.title = `i18nCheck — Results for ${url || 'website'}`;
+    } else {
+      document.title = 'i18nCheck — Dashboard';
+    }
+  }, [isLoading, previewUrl, url]);
 
   const loadingSteps = [
     "Launching browser...",
@@ -77,6 +90,7 @@ export default function Dashboard() {
 
     setIsLoading(true);
     setPreviewUrl(`/api/preview?url=${encodeURIComponent(targetUrl)}&mode=${mode}&t=${Date.now()}`);
+    setUsageCount(prev => Math.min(MAX_FREE_CHECKS, prev + 1));
     
     // Save to recent checks
     const newCheck: CheckResult = {
@@ -104,7 +118,14 @@ export default function Dashboard() {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(`https://i18ncheck.dev/share/${Math.random().toString(36).substring(7)}`);
     setShowToast(true);
-    setTimeout(() => setShowToast(false), 2000);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
+  const handleDeleteCheck = (id: string, e: MouseEvent) => {
+    e.stopPropagation();
+    const updated = recentChecks.filter(c => c.id !== id);
+    setRecentChecks(updated);
+    localStorage.setItem('i18n_checks', JSON.stringify(updated));
   };
 
   const modes = [
@@ -241,8 +262,8 @@ export default function Dashboard() {
           <nav className="space-y-2">
             <NavLink to="/app" icon={Home} active={location.pathname === '/app'}>Dashboard</NavLink>
             <NavLink to="/app" icon={Search}>New Check</NavLink>
-            <NavLink to="/app" icon={History}>Check History</NavLink>
-            <NavLink to="/app" icon={Settings}>Settings</NavLink>
+            <NavLink to="/app/history" icon={History} active={location.pathname === '/app/history'}>Check History</NavLink>
+            <NavLink to="/app/settings" icon={Settings} active={location.pathname === '/app/settings'}>Settings</NavLink>
           </nav>
         </div>
 
@@ -255,10 +276,10 @@ export default function Dashboard() {
             <div className="space-y-2">
               <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-[#f1f5f9]/40">
                 <span>Usage</span>
-                <span>2 of 3 checks</span>
+                <span>{usageCount} of {MAX_FREE_CHECKS} checks</span>
               </div>
               <div className="h-1.5 w-full bg-[#0a0e17] rounded-full overflow-hidden">
-                <div className="h-full bg-[#06b6d4] w-[66%]" />
+                <div className="h-full bg-[#06b6d4]" style={{ width: `${(usageCount / MAX_FREE_CHECKS) * 100}%` }} />
               </div>
             </div>
           </div>
@@ -268,7 +289,35 @@ export default function Dashboard() {
       {/* Main Content */}
       <main className="flex-1 md:ml-[280px] min-h-screen pt-20 md:pt-0">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          {/* New Check Section */}
+          {location.pathname === '/app/settings' ? (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-[#111827] rounded-2xl border border-[#1e293b] p-12 text-center shadow-2xl"
+            >
+              <div className="w-20 h-20 bg-[#0a0e17] rounded-full flex items-center justify-center mx-auto mb-6 border border-[#1e293b]">
+                <Settings className="w-10 h-10 text-[#06b6d4]" />
+              </div>
+              <h2 className="text-3xl font-bold mb-4">Settings — Coming Soon</h2>
+              <p className="text-[#f1f5f9]/60 max-w-md mx-auto leading-relaxed">
+                We're working on account settings, API keys, and team management. Stay tuned for updates!
+              </p>
+            </motion.div>
+          ) : location.pathname === '/app/history' ? (
+            <div className="space-y-8">
+              <div className="flex items-center gap-3">
+                <History className="w-8 h-8 text-[#06b6d4]" />
+                <h2 className="text-3xl font-bold">Check History</h2>
+              </div>
+              <RecentChecksList 
+                checks={recentChecks} 
+                onView={handleViewResults} 
+                onDelete={handleDeleteCheck} 
+              />
+            </div>
+          ) : (
+            <>
+              {/* New Check Section */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -358,7 +407,7 @@ export default function Dashboard() {
                 <div className="lg:col-span-2 flex flex-col gap-3">
                   <button
                     type="submit"
-                    disabled={!url || isLoading}
+                    disabled={!url || isLoading || usageCount >= MAX_FREE_CHECKS}
                     className="w-full py-4 bg-[#06b6d4] hover:bg-[#0891b2] text-[#0a0e17] font-bold rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#06b6d4]/20"
                   >
                     {isLoading ? (
@@ -370,6 +419,11 @@ export default function Dashboard() {
                       </>
                     )}
                   </button>
+                  {usageCount >= MAX_FREE_CHECKS && (
+                    <p className="text-[10px] text-[#ef4444] font-bold text-center leading-tight">
+                      Daily limit reached. Come back tomorrow or upgrade for more checks.
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -471,6 +525,14 @@ export default function Dashboard() {
                         {modes.find(m => m.id === mode)?.name} PREVIEW
                       </div>
                       <button
+                        onClick={copyToClipboard}
+                        className="p-1.5 hover:bg-[#1e293b] rounded-md text-[#f1f5f9]/40 transition-colors flex items-center gap-2"
+                        title="Copy Share Link"
+                      >
+                        <Share2 className="w-4 h-4" />
+                        <span className="text-[10px] font-bold uppercase">Share</span>
+                      </button>
+                      <button
                         onClick={() => setIsMaximized(!isMaximized)}
                         className="p-1.5 hover:bg-[#1e293b] rounded-md text-[#f1f5f9]/40 transition-colors"
                       >
@@ -569,73 +631,22 @@ export default function Dashboard() {
           </AnimatePresence>
 
           {/* Recent Checks Section */}
-          <div className="mt-12">
-            <div className="flex items-center gap-3 mb-8">
-              <Clock className="w-6 h-6 text-[#06b6d4]" />
-              <h2 className="text-2xl font-bold">Recent Checks</h2>
+          {location.pathname === '/app' && (
+            <div className="mt-12">
+              <div className="flex items-center gap-3 mb-8">
+                <Clock className="w-6 h-6 text-[#06b6d4]" />
+                <h2 className="text-2xl font-bold">Recent Checks</h2>
+              </div>
+
+              <RecentChecksList 
+                checks={recentChecks} 
+                onView={handleViewResults} 
+                onDelete={handleDeleteCheck} 
+              />
             </div>
-
-            {recentChecks.length === 0 ? (
-              <div className="bg-[#111827] border border-[#1e293b] rounded-2xl p-12 text-center">
-                <div className="w-16 h-16 bg-[#0a0e17] rounded-full flex items-center justify-center mx-auto mb-6 border border-[#1e293b]">
-                  <History className="w-8 h-8 text-[#f1f5f9]/20" />
-                </div>
-                <h3 className="text-lg font-bold mb-2">No checks yet</h3>
-                <p className="text-[#f1f5f9]/40 max-w-sm mx-auto">
-                  Enter a URL above to run your first i18n layout test.
-                </p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {recentChecks.map((check) => (
-                  <motion.div 
-                    key={check.id}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="bg-[#111827] border border-[#1e293b] rounded-2xl p-6 hover:border-[#06b6d4]/30 transition-all group"
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-3 truncate">
-                        <div className="w-10 h-10 bg-[#0a0e17] rounded-lg flex items-center justify-center border border-[#1e293b] shrink-0">
-                          <img 
-                            src={`https://www.google.com/s2/favicons?domain=${check.url}&sz=64`} 
-                            alt="favicon" 
-                            className="w-6 h-6"
-                            referrerPolicy="no-referrer"
-                          />
-                        </div>
-                        <div className="truncate">
-                          <h4 className="font-bold text-[#f1f5f9] truncate">{check.url}</h4>
-                          <span className="text-[10px] text-[#f1f5f9]/40 uppercase font-bold tracking-widest">
-                            {new Date(check.timestamp).toLocaleString()}
-                          </span>
-                        </div>
-                      </div>
-                      <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${check.status === 'issues_found' ? 'bg-[#ef4444]' : 'bg-[#22c55e]'}`} />
-                    </div>
-
-                    <div className="flex items-center gap-2 mb-6">
-                      <span className="px-2 py-0.5 bg-[#06b6d4]/10 text-[#06b6d4] text-[10px] font-black uppercase rounded">
-                        {check.simulation}
-                      </span>
-                      <div className="flex items-center gap-3 ml-auto">
-                        <span className="text-[10px] flex items-center gap-1">🔴 {check.issues.critical}</span>
-                        <span className="text-[10px] flex items-center gap-1">🟡 {check.issues.warning}</span>
-                        <span className="text-[10px] flex items-center gap-1">🟢 {check.issues.info}</span>
-                      </div>
-                    </div>
-
-                    <button 
-                      onClick={() => handleViewResults(check)}
-                      className="w-full py-3 bg-[#1e293b] hover:bg-[#06b6d4] hover:text-[#0a0e17] text-[#f1f5f9] text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2"
-                    >
-                      View Results <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </motion.div>
-                ))}
-              </div>
-            )}
-          </div>
+          )}
+          </>
+          )}
         </div>
       </main>
 
@@ -649,10 +660,89 @@ export default function Dashboard() {
             className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-[#06b6d4] text-[#0a0e17] font-bold rounded-full shadow-2xl flex items-center gap-2"
           >
             <CheckCircle2 className="w-5 h-5" />
-            Link copied!
+            Link copied to clipboard!
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+function RecentChecksList({ checks, onView, onDelete }: { 
+  checks: CheckResult[], 
+  onView: (c: CheckResult) => void,
+  onDelete: (id: string, e: MouseEvent) => void
+}) {
+  if (checks.length === 0) {
+    return (
+      <div className="bg-[#111827] border border-[#1e293b] rounded-2xl p-12 text-center">
+        <div className="w-16 h-16 bg-[#0a0e17] rounded-full flex items-center justify-center mx-auto mb-6 border border-[#1e293b]">
+          <History className="w-8 h-8 text-[#f1f5f9]/20" />
+        </div>
+        <h3 className="text-lg font-bold mb-2">No checks yet</h3>
+        <p className="text-[#f1f5f9]/40 max-w-sm mx-auto">
+          Enter a URL above to run your first i18n layout test.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {checks.map((check) => (
+        <motion.div 
+          key={check.id}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-[#111827] border border-[#1e293b] rounded-2xl p-6 hover:border-[#06b6d4]/30 transition-all group relative"
+        >
+          <button 
+            onClick={(e) => onDelete(check.id, e)}
+            className="absolute top-4 right-4 p-2 text-[#f1f5f9]/20 hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+            title="Delete check"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+
+          <div className="flex items-start justify-between mb-4 pr-8">
+            <div className="flex items-center gap-3 truncate">
+              <div className="w-10 h-10 bg-[#0a0e17] rounded-lg flex items-center justify-center border border-[#1e293b] shrink-0">
+                <img 
+                  src={`https://www.google.com/s2/favicons?domain=${check.url}&sz=64`} 
+                  alt="favicon" 
+                  className="w-6 h-6"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div className="truncate">
+                <h4 className="font-bold text-[#f1f5f9] truncate">{check.url}</h4>
+                <span className="text-[10px] text-[#f1f5f9]/40 uppercase font-bold tracking-widest">
+                  {new Date(check.timestamp).toLocaleString()}
+                </span>
+              </div>
+            </div>
+            <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${check.status === 'issues_found' ? 'bg-[#ef4444]' : 'bg-[#22c55e]'}`} />
+          </div>
+
+          <div className="flex items-center gap-2 mb-6">
+            <span className="px-2 py-0.5 bg-[#06b6d4]/10 text-[#06b6d4] text-[10px] font-black uppercase rounded">
+              {check.simulation}
+            </span>
+            <div className="flex items-center gap-3 ml-auto">
+              <span className="text-[10px] flex items-center gap-1">🔴 {check.issues.critical}</span>
+              <span className="text-[10px] flex items-center gap-1">🟡 {check.issues.warning}</span>
+              <span className="text-[10px] flex items-center gap-1">🟢 {check.issues.info}</span>
+            </div>
+          </div>
+
+          <button 
+            onClick={() => onView(check)}
+            className="w-full py-3 bg-[#1e293b] hover:bg-[#06b6d4] hover:text-[#0a0e17] text-[#f1f5f9] text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2"
+          >
+            View Results <ArrowRight className="w-4 h-4" />
+          </button>
+        </motion.div>
+      ))}
     </div>
   );
 }
