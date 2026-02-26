@@ -83,8 +83,8 @@ export default function AboutPage() {
                 </p>
                 <p>
                   Have questions? Reach us at{' '}
-                  <a href="mailto:contact@i18ncheck.com" className="text-[#06b6d4] hover:underline">
-                    contact@i18ncheck.com
+                  <a href="mailto:contact@i18ncheck.dev" className="text-[#06b6d4] hover:underline">
+                    contact@i18ncheck.dev
                   </a>
                 </p>
               </div>

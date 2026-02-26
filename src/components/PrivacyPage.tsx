@@ -98,7 +98,7 @@ export default function PrivacyPage() {
                       <span className="text-[#06b6d4] mr-2">1.</span>Introduction
                     </h2>
                     <p className="text-[#f1f5f9]/60 leading-relaxed">
-                      i18nCheck.dev ("we", "our", "us") is operated by Alpha Web Creation LLC. This Privacy Policy explains how we collect, use, and protect your information when you use our website and services at i18ncheck.com and i18ncheck.dev (the "Service").
+                      i18nCheck.dev ("we", "our", "us") is operated by Alpha Web Creation LLC. This Privacy Policy explains how we collect, use, and protect your information when you use our website and services at i18ncheck.dev and i18ncheck.dev (the "Service").
                     </p>
                   </section>
 
@@ -216,7 +216,7 @@ export default function PrivacyPage() {
                     </ul>
                     <p className="text-[#f1f5f9]/60 leading-relaxed">
                       To exercise these rights, contact us at{' '}
-                      <a href="mailto:contact@i18ncheck.com" className="text-[#06b6d4] hover:underline">contact@i18ncheck.com</a>.
+                      <a href="mailto:contact@i18ncheck.dev" className="text-[#06b6d4] hover:underline">contact@i18ncheck.dev</a>.
                     </p>
                   </section>
 
@@ -259,7 +259,7 @@ export default function PrivacyPage() {
                       If you have questions about this Privacy Policy, contact us at:
                     </p>
                     <ul className="space-y-2 text-[#f1f5f9]/60">
-                      <li>Email: <a href="mailto:contact@i18ncheck.com" className="text-[#06b6d4] hover:underline">contact@i18ncheck.com</a></li>
+                      <li>Email: <a href="mailto:contact@i18ncheck.dev" className="text-[#06b6d4] hover:underline">contact@i18ncheck.dev</a></li>
                       <li>Company: Alpha Web Creation LLC</li>
                       <li>Location: Wyoming, United States</li>
                     </ul>

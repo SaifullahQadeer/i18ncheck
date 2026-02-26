@@ -162,8 +162,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h4 className="font-bold text-sm text-[#f1f5f9]/70 mb-1">Email</h4>
-                      <a href="mailto:contact@i18ncheck.com" className="text-[#06b6d4] hover:underline">
-                        contact@i18ncheck.com
+                      <a href="mailto:contact@i18ncheck.dev" className="text-[#06b6d4] hover:underline">
+                        contact@i18ncheck.dev
                       </a>
                     </div>
                   </div>
