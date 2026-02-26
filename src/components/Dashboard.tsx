@@ -125,8 +125,8 @@ const loadingSteps = [
 function ChartTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-[#1e293b] border border-[#334155] rounded-lg px-3 py-2 shadow-xl">
-      <p className="text-xs font-medium text-[#f1f5f9]/60 mb-1">{label}</p>
+    <div className="bg-white border border-[#e2e8f0] rounded-lg px-3 py-2 shadow-sm">
+      <p className="text-xs font-medium text-[#475569] mb-1">{label}</p>
       {payload.map((entry: any, i: number) => (
         <p key={i} className="text-sm font-bold" style={{ color: entry.color }}>
           {entry.name}: {entry.value}
@@ -146,7 +146,7 @@ function StatCard({ icon: Icon, label, value, subtext, color, trend }: {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-[#111827] rounded-2xl border border-[#1e293b] p-6 hover:border-[#1e293b]/80 transition-all group"
+      className="bg-white rounded-2xl border border-[#e2e8f0] shadow-sm p-6 hover:border-[#e2e8f0]/80 transition-all group"
     >
       <div className="flex items-start justify-between mb-4">
         <div className={`w-11 h-11 rounded-xl flex items-center justify-center`} style={{ backgroundColor: `${color}15` }}>
@@ -159,9 +159,9 @@ function StatCard({ icon: Icon, label, value, subtext, color, trend }: {
           </span>
         )}
       </div>
-      <div className="text-3xl font-bold text-[#f1f5f9] mb-1">{value}</div>
-      <div className="text-xs font-medium text-[#f1f5f9]/40 uppercase tracking-wider">{label}</div>
-      {subtext && <div className="text-xs text-[#f1f5f9]/30 mt-1">{subtext}</div>}
+      <div className="text-3xl font-bold text-[#0f172a] mb-1">{value}</div>
+      <div className="text-xs font-medium text-[#94a3b8] uppercase tracking-wider">{label}</div>
+      {subtext && <div className="text-xs text-[#94a3b8] mt-1">{subtext}</div>}
     </motion.div>
   );
 }
@@ -348,14 +348,14 @@ export default function Dashboard() {
       onClick={() => setIsSidebarOpen(false)}
       className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
         active
-          ? 'bg-[#06b6d4]/10 text-[#06b6d4] font-bold border border-[#06b6d4]/20'
-          : 'text-[#f1f5f9]/50 hover:text-[#f1f5f9] hover:bg-[#1e293b]/50'
+          ? 'bg-[#0f172a]/10 text-[#0f172a] font-bold border border-[#e2e8f0]'
+          : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f8fafc]'
       }`}
     >
       <Icon className="w-5 h-5" />
       <span className="flex-1">{children}</span>
       {badge !== undefined && badge > 0 && (
-        <span className="px-2 py-0.5 bg-[#06b6d4]/10 text-[#06b6d4] text-[10px] font-bold rounded-full">{badge}</span>
+        <span className="px-2 py-0.5 bg-[#0f172a]/10 text-[#0f172a] text-[10px] font-bold rounded-full">{badge}</span>
       )}
     </Link>
   );
@@ -372,16 +372,14 @@ export default function Dashboard() {
   // ─── Render ─────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-[#0a0e17] text-[#f1f5f9] flex">
+    <div className="min-h-screen bg-white text-[#0f172a] flex">
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-[#0f1219]/95 backdrop-blur-xl border-b border-[#1e293b] flex items-center justify-between px-4 z-[70]">
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-xl border-b border-[#e2e8f0] flex items-center justify-between px-4 z-[70]">
         <Link to="/" className="flex items-center gap-2">
-          <div className="bg-[#06b6d4] p-1.5 rounded-lg">
-            <Globe className="w-4 h-4 text-[#0a0e17]" />
-          </div>
-          <span className="font-bold text-lg">i18nCheck</span>
+          <Globe className="w-5 h-5 text-[#06b6d4]" />
+          <span className="font-bold text-lg"><span className="text-[#06b6d4]">i18n</span>Check.dev</span>
         </Link>
-        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 text-[#f1f5f9]/60">
+        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 text-[#475569]">
           {isSidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
@@ -392,20 +390,18 @@ export default function Dashboard() {
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed top-0 left-0 bottom-0 w-[260px] bg-[#0f1219] border-r border-[#1e293b] flex flex-col z-[80] transition-transform duration-300 md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`fixed top-0 left-0 bottom-0 w-[260px] bg-[#f8fafc] border-r border-[#e2e8f0] flex flex-col z-[80] transition-transform duration-300 md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="p-5">
           <Link to="/" className="flex items-center gap-2.5 mb-8">
-            <div className="bg-[#06b6d4] p-1.5 rounded-lg shadow-lg shadow-[#06b6d4]/20">
-              <Globe className="w-5 h-5 text-[#0a0e17]" />
-            </div>
-            <span className="font-bold text-lg tracking-tight">i18nCheck<span className="text-[#06b6d4]">.dev</span></span>
+            <Globe className="w-5 h-5 text-[#06b6d4]" />
+            <span className="font-bold text-lg tracking-tight"><span className="text-[#06b6d4]">i18n</span>Check.dev</span>
           </Link>
 
           {/* New Check CTA */}
           <Link
             to="/app/new"
             onClick={() => setIsSidebarOpen(false)}
-            className="flex items-center justify-center gap-2 w-full py-3 mb-6 bg-[#06b6d4] hover:bg-[#0891b2] text-[#0a0e17] font-bold rounded-xl transition-all shadow-lg shadow-[#06b6d4]/20 text-sm"
+            className="flex items-center justify-center gap-2 w-full py-3 mb-6 bg-[#0f172a] hover:bg-[#1e293b] text-white font-bold rounded-xl transition-all shadow-sm text-sm"
           >
             <Plus className="w-4 h-4" />
             New Check
@@ -418,18 +414,18 @@ export default function Dashboard() {
           </nav>
         </div>
 
-        <div className="mt-auto p-5 border-t border-[#1e293b]">
-          <div className="bg-[#111827]/80 rounded-xl p-4 border border-[#1e293b]">
+        <div className="mt-auto p-5 border-t border-[#e2e8f0]">
+          <div className="bg-white rounded-xl p-4 border border-[#e2e8f0] shadow-sm">
             <div className="flex items-center justify-between mb-3">
-              <span className="px-2 py-0.5 bg-[#06b6d4]/10 text-[#06b6d4] text-[10px] font-black uppercase rounded">Free</span>
-              <button className="text-[10px] font-bold text-[#06b6d4] hover:underline">Upgrade</button>
+              <span className="px-2 py-0.5 bg-[#0f172a]/10 text-[#0f172a] text-[10px] font-black uppercase rounded">Free</span>
+              <button className="text-[10px] font-bold text-[#0f172a] hover:underline">Upgrade</button>
             </div>
             <div className="space-y-2">
-              <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-[#f1f5f9]/40">
+              <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-[#94a3b8]">
                 <span>Today</span>
                 <span>{usageCount}/{MAX_FREE_CHECKS}</span>
               </div>
-              <div className="h-1.5 w-full bg-[#0a0e17] rounded-full overflow-hidden">
+              <div className="h-1.5 w-full bg-[#e2e8f0] rounded-full overflow-hidden">
                 <div
                   className="h-full rounded-full transition-all duration-500"
                   style={{
@@ -452,13 +448,13 @@ export default function Dashboard() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-[#111827] rounded-2xl border border-[#1e293b] p-12 text-center shadow-2xl"
+              className="bg-white rounded-2xl border border-[#e2e8f0] shadow-sm p-12 text-center"
             >
-              <div className="w-20 h-20 bg-[#0a0e17] rounded-full flex items-center justify-center mx-auto mb-6 border border-[#1e293b]">
-                <Settings className="w-10 h-10 text-[#06b6d4]" />
+              <div className="w-20 h-20 bg-[#f8fafc] rounded-full flex items-center justify-center mx-auto mb-6 border border-[#e2e8f0]">
+                <Settings className="w-10 h-10 text-[#0f172a]" />
               </div>
               <h2 className="text-3xl font-bold mb-4">Settings — Coming Soon</h2>
-              <p className="text-[#f1f5f9]/60 max-w-md mx-auto leading-relaxed">
+              <p className="text-[#475569] max-w-md mx-auto leading-relaxed">
                 We're working on account settings, API keys, and team management. Stay tuned for updates!
               </p>
             </motion.div>
@@ -469,17 +465,17 @@ export default function Dashboard() {
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-[#06b6d4]/10 rounded-xl flex items-center justify-center">
-                    <History className="w-5 h-5 text-[#06b6d4]" />
+                  <div className="w-10 h-10 bg-[#0f172a]/10 rounded-xl flex items-center justify-center">
+                    <History className="w-5 h-5 text-[#0f172a]" />
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold">Check History</h2>
-                    <p className="text-sm text-[#f1f5f9]/40">{recentChecks.length} checks total</p>
+                    <p className="text-sm text-[#94a3b8]">{recentChecks.length} checks total</p>
                   </div>
                 </div>
                 <Link
                   to="/app/new"
-                  className="flex items-center gap-2 px-4 py-2.5 bg-[#06b6d4] hover:bg-[#0891b2] text-[#0a0e17] font-bold rounded-xl transition-all text-sm"
+                  className="flex items-center gap-2 px-4 py-2.5 bg-[#0f172a] hover:bg-[#1e293b] text-white font-bold rounded-xl transition-all text-sm"
                 >
                   <Plus className="w-4 h-4" />
                   New Check
@@ -504,11 +500,11 @@ export default function Dashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <h1 className="text-3xl font-bold mb-1">Dashboard</h1>
-                  <p className="text-[#f1f5f9]/40 text-sm">Your i18n layout testing overview</p>
+                  <p className="text-[#94a3b8] text-sm">Your i18n layout testing overview</p>
                 </div>
                 <Link
                   to="/app/new"
-                  className="flex items-center gap-2 px-5 py-3 bg-[#06b6d4] hover:bg-[#0891b2] text-[#0a0e17] font-bold rounded-xl transition-all shadow-lg shadow-[#06b6d4]/20 text-sm"
+                  className="flex items-center gap-2 px-5 py-3 bg-[#0f172a] hover:bg-[#1e293b] text-white font-bold rounded-xl transition-all shadow-sm text-sm"
                 >
                   <Plus className="w-4 h-4" />
                   New Check
@@ -554,21 +550,21 @@ export default function Dashboard() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
-                  className="lg:col-span-2 bg-[#111827] rounded-2xl border border-[#1e293b] p-6"
+                  className="lg:col-span-2 bg-white rounded-2xl border border-[#e2e8f0] shadow-sm p-6"
                 >
                   <div className="flex items-center justify-between mb-6">
                     <div>
-                      <h3 className="text-sm font-bold text-[#f1f5f9]/80">Check Activity</h3>
-                      <p className="text-xs text-[#f1f5f9]/30 mt-0.5">Last 7 days</p>
+                      <h3 className="text-sm font-bold text-[#0f172a]">Check Activity</h3>
+                      <p className="text-xs text-[#94a3b8] mt-0.5">Last 7 days</p>
                     </div>
                     <div className="flex items-center gap-4 text-[10px] font-medium">
                       <span className="flex items-center gap-1.5">
                         <span className="w-2.5 h-2.5 rounded-full bg-[#06b6d4]" />
-                        <span className="text-[#f1f5f9]/40">Checks</span>
+                        <span className="text-[#94a3b8]">Checks</span>
                       </span>
                       <span className="flex items-center gap-1.5">
                         <span className="w-2.5 h-2.5 rounded-full bg-[#f59e0b]" />
-                        <span className="text-[#f1f5f9]/40">Issues</span>
+                        <span className="text-[#94a3b8]">Issues</span>
                       </span>
                     </div>
                   </div>
@@ -585,9 +581,9 @@ export default function Dashboard() {
                             <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
                           </linearGradient>
                         </defs>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
-                        <XAxis dataKey="date" tick={{ fill: '#f1f5f980', fontSize: 11 }} tickLine={false} axisLine={false} />
-                        <YAxis tick={{ fill: '#f1f5f960', fontSize: 11 }} tickLine={false} axisLine={false} allowDecimals={false} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                        <XAxis dataKey="date" tick={{ fill: '#475569', fontSize: 11 }} tickLine={false} axisLine={false} />
+                        <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} tickLine={false} axisLine={false} allowDecimals={false} />
                         <Tooltip content={<ChartTooltip />} />
                         <Area type="monotone" dataKey="checks" name="Checks" stroke="#06b6d4" strokeWidth={2} fill="url(#gradCyan)" />
                         <Area type="monotone" dataKey="issues" name="Issues" stroke="#f59e0b" strokeWidth={2} fill="url(#gradAmber)" />
@@ -596,8 +592,8 @@ export default function Dashboard() {
                   ) : (
                     <div className="h-[220px] flex items-center justify-center">
                       <div className="text-center">
-                        <BarChart3 className="w-10 h-10 text-[#f1f5f9]/10 mx-auto mb-3" />
-                        <p className="text-sm text-[#f1f5f9]/30">Run your first check to see activity</p>
+                        <BarChart3 className="w-10 h-10 text-[#94a3b8] mx-auto mb-3" />
+                        <p className="text-sm text-[#94a3b8]">Run your first check to see activity</p>
                       </div>
                     </div>
                   )}
@@ -608,10 +604,10 @@ export default function Dashboard() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className="bg-[#111827] rounded-2xl border border-[#1e293b] p-6"
+                  className="bg-white rounded-2xl border border-[#e2e8f0] shadow-sm p-6"
                 >
-                  <h3 className="text-sm font-bold text-[#f1f5f9]/80 mb-1">Issue Breakdown</h3>
-                  <p className="text-xs text-[#f1f5f9]/30 mb-4">By severity</p>
+                  <h3 className="text-sm font-bold text-[#0f172a] mb-1">Issue Breakdown</h3>
+                  <p className="text-xs text-[#94a3b8] mb-4">By severity</p>
                   {analytics.totalCritical + analytics.totalWarnings + analytics.totalInfo > 0 ? (
                     <>
                       <ResponsiveContainer width="100%" height={140}>
@@ -638,9 +634,9 @@ export default function Dashboard() {
                           <div key={item.name} className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }} />
-                              <span className="text-xs text-[#f1f5f9]/50">{item.name}</span>
+                              <span className="text-xs text-[#475569]">{item.name}</span>
                             </div>
-                            <span className="text-xs font-bold text-[#f1f5f9]/70">{item.value}</span>
+                            <span className="text-xs font-bold text-[#475569]">{item.value}</span>
                           </div>
                         ))}
                       </div>
@@ -648,8 +644,8 @@ export default function Dashboard() {
                   ) : (
                     <div className="h-[220px] flex items-center justify-center">
                       <div className="text-center">
-                        <ShieldAlert className="w-10 h-10 text-[#f1f5f9]/10 mx-auto mb-3" />
-                        <p className="text-sm text-[#f1f5f9]/30">No issues yet</p>
+                        <ShieldAlert className="w-10 h-10 text-[#94a3b8] mx-auto mb-3" />
+                        <p className="text-sm text-[#94a3b8]">No issues yet</p>
                       </div>
                     </div>
                   )}
@@ -662,15 +658,15 @@ export default function Dashboard() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
-                  className="bg-[#111827] rounded-2xl border border-[#1e293b] p-6"
+                  className="bg-white rounded-2xl border border-[#e2e8f0] shadow-sm p-6"
                 >
-                  <h3 className="text-sm font-bold text-[#f1f5f9]/80 mb-1">Simulation Modes Used</h3>
-                  <p className="text-xs text-[#f1f5f9]/30 mb-6">Distribution across your checks</p>
+                  <h3 className="text-sm font-bold text-[#0f172a] mb-1">Simulation Modes Used</h3>
+                  <p className="text-xs text-[#94a3b8] mb-6">Distribution across your checks</p>
                   <ResponsiveContainer width="100%" height={200}>
                     <BarChart data={analytics.modeData} margin={{ top: 5, right: 5, bottom: 0, left: -20 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
-                      <XAxis dataKey="name" tick={{ fill: '#f1f5f980', fontSize: 11 }} tickLine={false} axisLine={false} />
-                      <YAxis tick={{ fill: '#f1f5f960', fontSize: 11 }} tickLine={false} axisLine={false} allowDecimals={false} />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                      <XAxis dataKey="name" tick={{ fill: '#475569', fontSize: 11 }} tickLine={false} axisLine={false} />
+                      <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} tickLine={false} axisLine={false} allowDecimals={false} />
                       <Tooltip content={<ChartTooltip />} />
                       <Bar dataKey="count" name="Checks" fill="#06b6d4" radius={[6, 6, 0, 0]} maxBarSize={50} />
                     </BarChart>
@@ -682,11 +678,11 @@ export default function Dashboard() {
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2.5">
-                    <Clock className="w-5 h-5 text-[#06b6d4]" />
+                    <Clock className="w-5 h-5 text-[#0f172a]" />
                     <h3 className="text-lg font-bold">Recent Checks</h3>
                   </div>
                   {recentChecks.length > 0 && (
-                    <Link to="/app/history" className="text-xs font-bold text-[#06b6d4] hover:underline flex items-center gap-1">
+                    <Link to="/app/history" className="text-xs font-bold text-[#0f172a] hover:underline flex items-center gap-1">
                       View all <ArrowRight className="w-3 h-3" />
                     </Link>
                   )}
@@ -708,13 +704,13 @@ export default function Dashboard() {
               <div className="flex items-center gap-3 mb-6">
                 <button
                   onClick={() => navigate('/app')}
-                  className="p-2 hover:bg-[#1e293b] rounded-xl transition-colors text-[#f1f5f9]/40 hover:text-[#f1f5f9]"
+                  className="p-2 hover:bg-[#f8fafc] rounded-xl transition-colors text-[#94a3b8] hover:text-[#0f172a]"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <div>
                   <h1 className="text-2xl font-bold">New Check</h1>
-                  <p className="text-sm text-[#f1f5f9]/40">Test your website's i18n layout resilience</p>
+                  <p className="text-sm text-[#94a3b8]">Test your website's i18n layout resilience</p>
                 </div>
               </div>
 
@@ -722,13 +718,13 @@ export default function Dashboard() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-[#111827] rounded-2xl border border-[#1e293b] p-6 sm:p-8 mb-8 shadow-2xl"
+                className="bg-white rounded-2xl border border-[#e2e8f0] shadow-sm p-6 sm:p-8 mb-8"
               >
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-end">
                     <div className="lg:col-span-6">
-                      <label htmlFor="url" className="flex items-center gap-2 text-xs font-bold text-[#f1f5f9]/50 mb-2.5 uppercase tracking-wider">
-                        <Globe className="w-3.5 h-3.5 text-[#06b6d4]" />
+                      <label htmlFor="url" className="flex items-center gap-2 text-xs font-bold text-[#475569] mb-2.5 uppercase tracking-wider">
+                        <Globe className="w-3.5 h-3.5 text-[#0f172a]" />
                         Website URL
                       </label>
                       <input
@@ -737,20 +733,20 @@ export default function Dashboard() {
                         placeholder="https://example.com"
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
-                        className="w-full px-5 py-4 bg-[#0a0e17] border border-[#1e293b] rounded-xl focus:ring-2 focus:ring-[#06b6d4] focus:border-transparent outline-none transition-all text-base"
+                        className="w-full px-5 py-4 bg-white border border-[#e2e8f0] rounded-xl focus:ring-2 focus:ring-[#0f172a]/20 focus:border-[#0f172a] outline-none transition-all text-base placeholder-[#94a3b8]"
                       />
                     </div>
 
                     <div className="lg:col-span-4">
-                      <label className="flex items-center gap-2 text-xs font-bold text-[#f1f5f9]/50 mb-2.5 uppercase tracking-wider">
-                        <Layout className="w-3.5 h-3.5 text-[#06b6d4]" />
+                      <label className="flex items-center gap-2 text-xs font-bold text-[#475569] mb-2.5 uppercase tracking-wider">
+                        <Layout className="w-3.5 h-3.5 text-[#0f172a]" />
                         Simulation Mode
                       </label>
                       <div className="relative">
                         <button
                           type="button"
                           onClick={() => setShowModeDropdown(!showModeDropdown)}
-                          className="w-full flex items-center justify-between px-5 py-4 bg-[#0a0e17] border border-[#1e293b] rounded-xl hover:border-[#06b6d4]/40 transition-all text-left"
+                          className="w-full flex items-center justify-between px-5 py-4 bg-white border border-[#e2e8f0] rounded-xl hover:border-[#94a3b8] transition-all text-left"
                         >
                           <div className="flex items-center gap-3">
                             {(() => {
@@ -758,13 +754,13 @@ export default function Dashboard() {
                               const Icon = selectedMode.icon;
                               return (
                                 <>
-                                  <Icon className="w-5 h-5 text-[#06b6d4]" />
-                                  <span className="font-medium text-[#f1f5f9]">{selectedMode.name}</span>
+                                  <Icon className="w-5 h-5 text-[#0f172a]" />
+                                  <span className="font-medium text-[#0f172a]">{selectedMode.name}</span>
                                 </>
                               );
                             })()}
                           </div>
-                          <ChevronDown className={`w-5 h-5 text-[#f1f5f9]/30 transition-transform ${showModeDropdown ? 'rotate-180' : ''}`} />
+                          <ChevronDown className={`w-5 h-5 text-[#94a3b8] transition-transform ${showModeDropdown ? 'rotate-180' : ''}`} />
                         </button>
 
                         <AnimatePresence>
@@ -773,23 +769,23 @@ export default function Dashboard() {
                               initial={{ opacity: 0, y: 8 }}
                               animate={{ opacity: 1, y: 0 }}
                               exit={{ opacity: 0, y: 8 }}
-                              className="absolute top-full left-0 right-0 mt-2 bg-[#111827] rounded-xl shadow-2xl border border-[#1e293b] overflow-hidden z-50 max-h-80 overflow-y-auto"
+                              className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-sm border border-[#e2e8f0] overflow-hidden z-50 max-h-80 overflow-y-auto"
                             >
                               {modes.map((m) => (
                                 <button
                                   key={m.id}
                                   type="button"
                                   onClick={() => { setMode(m.id); setShowModeDropdown(false); }}
-                                  className={`w-full flex items-start gap-4 px-5 py-3.5 text-left transition-colors hover:bg-[#06b6d4]/5 ${
-                                    mode === m.id ? 'bg-[#06b6d4]/10' : ''
+                                  className={`w-full flex items-start gap-4 px-5 py-3.5 text-left transition-colors hover:bg-[#f8fafc] ${
+                                    mode === m.id ? 'bg-[#f8fafc]' : ''
                                   }`}
                                 >
-                                  <m.icon className={`w-5 h-5 mt-0.5 ${mode === m.id ? 'text-[#06b6d4]' : 'text-[#f1f5f9]/30'}`} />
+                                  <m.icon className={`w-5 h-5 mt-0.5 ${mode === m.id ? 'text-[#0f172a]' : 'text-[#94a3b8]'}`} />
                                   <div>
-                                    <div className={`text-sm font-bold ${mode === m.id ? 'text-[#06b6d4]' : 'text-[#f1f5f9]'}`}>{m.name}</div>
-                                    <div className="text-xs text-[#f1f5f9]/40 mt-0.5">{m.desc}</div>
+                                    <div className={`text-sm font-bold ${mode === m.id ? 'text-[#0f172a]' : 'text-[#0f172a]'}`}>{m.name}</div>
+                                    <div className="text-xs text-[#94a3b8] mt-0.5">{m.desc}</div>
                                   </div>
-                                  {mode === m.id && <Check className="w-5 h-5 text-[#06b6d4] ml-auto mt-0.5" />}
+                                  {mode === m.id && <Check className="w-5 h-5 text-[#0f172a] ml-auto mt-0.5" />}
                                 </button>
                               ))}
                             </motion.div>
@@ -802,7 +798,7 @@ export default function Dashboard() {
                       <button
                         type="submit"
                         disabled={!url || isLoading || usageCount >= MAX_FREE_CHECKS}
-                        className="w-full py-4 bg-[#06b6d4] hover:bg-[#0891b2] text-[#0a0e17] font-bold rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#06b6d4]/20"
+                        className="w-full py-4 bg-[#0f172a] hover:bg-[#1e293b] text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
                       >
                         {isLoading ? (
                           <RefreshCw className="w-5 h-5 animate-spin" />
@@ -821,15 +817,15 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-4 border-t border-[#1e293b]/60">
-                    <span className="text-[10px] font-bold text-[#f1f5f9]/30 uppercase tracking-widest shrink-0">Quick test:</span>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-4 border-t border-[#e2e8f0]">
+                    <span className="text-[10px] font-bold text-[#94a3b8] uppercase tracking-widest shrink-0">Quick test:</span>
                     <div className="flex flex-wrap gap-2">
                       {presets.map((p) => (
                         <button
                           key={p.url}
                           type="button"
                           onClick={() => setUrl(p.url)}
-                          className="px-3 py-1.5 bg-[#0a0e17] border border-[#1e293b] rounded-full text-xs font-medium text-[#f1f5f9]/50 hover:border-[#06b6d4]/50 hover:text-[#06b6d4] transition-all"
+                          className="px-3 py-1.5 bg-white border border-[#e2e8f0] rounded-full text-xs font-medium text-[#475569] hover:border-[#94a3b8] hover:text-[#0f172a] transition-all"
                         >
                           {p.name}
                         </button>
@@ -845,10 +841,10 @@ export default function Dashboard() {
                   <motion.div
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className={`bg-[#0a0e17] border border-[#1e293b] overflow-hidden flex flex-col transition-all duration-500 relative mb-8 ${
+                    className={`bg-white border border-[#e2e8f0] overflow-hidden flex flex-col transition-all duration-500 relative mb-8 ${
                       isMaximized
                         ? 'fixed inset-0 z-[100] rounded-none'
-                        : 'h-[650px] rounded-2xl shadow-2xl'
+                        : 'h-[650px] rounded-2xl shadow-sm'
                     }`}
                   >
                     <div className="flex-1 flex flex-col relative">
@@ -859,11 +855,11 @@ export default function Dashboard() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="absolute inset-0 z-20 bg-[#0a0e17] flex flex-col items-center justify-center p-12"
+                            className="absolute inset-0 z-20 bg-white flex flex-col items-center justify-center p-12"
                           >
-                            <div className="absolute top-0 left-0 right-0 h-1 bg-[#111827]">
+                            <div className="absolute top-0 left-0 right-0 h-1 bg-[#e2e8f0]">
                               <motion.div
-                                className="h-full bg-[#06b6d4]"
+                                className="h-full bg-[#0f172a]"
                                 initial={{ width: "0%" }}
                                 animate={{ width: `${(loadingStep + 1) * 20}%` }}
                                 transition={{ duration: 1.5 }}
@@ -874,18 +870,18 @@ export default function Dashboard() {
                                 {loadingSteps.map((step, idx) => (
                                   <div key={idx} className={`flex items-center gap-4 transition-all duration-500 ${idx > loadingStep ? 'opacity-20' : 'opacity-100'}`}>
                                     <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${
-                                      idx < loadingStep ? 'bg-[#22c55e] text-[#0a0e17]' :
-                                      idx === loadingStep ? 'bg-[#06b6d4] text-[#0a0e17]' :
-                                      'bg-[#1e293b] text-[#f1f5f9]/20'
+                                      idx < loadingStep ? 'bg-[#22c55e] text-white' :
+                                      idx === loadingStep ? 'bg-[#0f172a] text-white' :
+                                      'bg-[#f8fafc] text-[#94a3b8]'
                                     }`}>
                                       {idx < loadingStep ? <Check className="w-4 h-4" /> : <span className="text-[10px] font-bold">{idx + 1}</span>}
                                     </div>
-                                    <span className={`text-sm font-medium ${idx === loadingStep ? 'text-[#06b6d4]' : 'text-[#f1f5f9]/50'}`}>{step}</span>
+                                    <span className={`text-sm font-medium ${idx === loadingStep ? 'text-[#0f172a]' : 'text-[#475569]'}`}>{step}</span>
                                   </div>
                                 ))}
                               </div>
                               <div className="pt-6 text-center">
-                                <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#111827] rounded-full border border-[#1e293b] text-xs font-medium text-[#f1f5f9]/40">
+                                <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#f8fafc] rounded-full border border-[#e2e8f0] text-xs font-medium text-[#94a3b8]">
                                   <RefreshCw className="w-3 h-3 animate-spin" />
                                   Usually takes 5-15 seconds
                                 </div>
@@ -896,26 +892,26 @@ export default function Dashboard() {
                       </AnimatePresence>
 
                       {/* Browser Chrome */}
-                      <div className="bg-[#111827] border-b border-[#1e293b] px-4 py-3 flex items-center justify-between shrink-0 z-10">
+                      <div className="bg-[#f8fafc] border-b border-[#e2e8f0] px-4 py-3 flex items-center justify-between shrink-0 z-10">
                         <div className="flex items-center gap-5 flex-1">
                           <div className="flex gap-1.5">
                             <div className="w-3 h-3 rounded-full bg-[#ef4444]/60"></div>
                             <div className="w-3 h-3 rounded-full bg-[#f59e0b]/60"></div>
                             <div className="w-3 h-3 rounded-full bg-[#22c55e]/60"></div>
                           </div>
-                          <div className="flex-1 max-w-xl px-4 py-1.5 bg-[#0a0e17] rounded-lg text-xs text-[#f1f5f9]/40 font-mono border border-[#1e293b] truncate flex items-center gap-2">
+                          <div className="flex-1 max-w-xl px-4 py-1.5 bg-white rounded-lg text-xs text-[#94a3b8] font-mono border border-[#e2e8f0] truncate flex items-center gap-2">
                             <Globe className="w-3 h-3 shrink-0" />
                             {previewUrl ? decodeURIComponent(previewUrl.split('url=')[1].split('&')[0]) : 'Loading...'}
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="px-2.5 py-1 bg-[#06b6d4]/10 border border-[#06b6d4]/20 rounded text-[10px] font-black text-[#06b6d4] uppercase tracking-wider hidden sm:block">
+                          <div className="px-2.5 py-1 bg-[#0f172a]/10 border border-[#e2e8f0] rounded text-[10px] font-black text-[#0f172a] uppercase tracking-wider hidden sm:block">
                             {modes.find(m => m.id === mode)?.name}
                           </div>
-                          <button onClick={copyToClipboard} className="p-1.5 hover:bg-[#1e293b] rounded-md text-[#f1f5f9]/30 hover:text-[#f1f5f9]/60 transition-colors" title="Share">
+                          <button onClick={copyToClipboard} className="p-1.5 hover:bg-[#e2e8f0] rounded-md text-[#94a3b8] hover:text-[#475569] transition-colors" title="Share">
                             <Share2 className="w-4 h-4" />
                           </button>
-                          <button onClick={() => setIsMaximized(!isMaximized)} className="p-1.5 hover:bg-[#1e293b] rounded-md text-[#f1f5f9]/30 hover:text-[#f1f5f9]/60 transition-colors">
+                          <button onClick={() => setIsMaximized(!isMaximized)} className="p-1.5 hover:bg-[#e2e8f0] rounded-md text-[#94a3b8] hover:text-[#475569] transition-colors">
                             {isMaximized ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
                           </button>
                         </div>
@@ -953,23 +949,23 @@ export default function Dashboard() {
                         </div>
                         <div>
                           <h2 className="text-xl font-bold">Layout Issues Detected</h2>
-                          <p className="text-xs text-[#f1f5f9]/40">{mockIssues.length} issues across the page</p>
+                          <p className="text-xs text-[#94a3b8]">{mockIssues.length} issues across the page</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3 bg-[#111827] px-4 py-2.5 rounded-xl border border-[#1e293b]">
+                      <div className="flex items-center gap-3 bg-[#f8fafc] px-4 py-2.5 rounded-xl border border-[#e2e8f0]">
                         <div className="flex items-center gap-1.5">
                           <div className="w-2 h-2 rounded-full bg-[#ef4444]" />
-                          <span className="text-xs font-bold text-[#f1f5f9]/50">3 Critical</span>
+                          <span className="text-xs font-bold text-[#475569]">3 Critical</span>
                         </div>
-                        <div className="w-px h-3 bg-[#1e293b]" />
+                        <div className="w-px h-3 bg-[#e2e8f0]" />
                         <div className="flex items-center gap-1.5">
                           <div className="w-2 h-2 rounded-full bg-[#f59e0b]" />
-                          <span className="text-xs font-bold text-[#f1f5f9]/50">4 Warnings</span>
+                          <span className="text-xs font-bold text-[#475569]">4 Warnings</span>
                         </div>
-                        <div className="w-px h-3 bg-[#1e293b]" />
+                        <div className="w-px h-3 bg-[#e2e8f0]" />
                         <div className="flex items-center gap-1.5">
-                          <div className="w-2 h-2 rounded-full bg-[#06b6d4]" />
-                          <span className="text-xs font-bold text-[#f1f5f9]/50">2 Info</span>
+                          <div className="w-2 h-2 rounded-full bg-[#3b82f6]" />
+                          <span className="text-xs font-bold text-[#475569]">2 Info</span>
                         </div>
                       </div>
                     </div>
@@ -979,23 +975,23 @@ export default function Dashboard() {
                       {mockIssues.map((issue) => (
                         <div
                           key={issue.id}
-                          className={`bg-[#111827] border ${expandedIssue === issue.id ? 'border-[#06b6d4]/40' : 'border-[#1e293b]'} rounded-xl overflow-hidden transition-all`}
+                          className={`bg-white border ${expandedIssue === issue.id ? 'border-[#0f172a]' : 'border-[#e2e8f0]'} rounded-xl overflow-hidden transition-all`}
                         >
                           <button
                             onClick={() => setExpandedIssue(expandedIssue === issue.id ? null : issue.id)}
-                            className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-[#1e293b]/30 transition-colors"
+                            className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-[#f8fafc] transition-colors"
                           >
                             <div className="flex items-center gap-3">
                               <div className={`w-2 h-2 rounded-full shrink-0 ${
                                 issue.severity === 'critical' ? 'bg-[#ef4444]' :
-                                issue.severity === 'warning' ? 'bg-[#f59e0b]' : 'bg-[#06b6d4]'
+                                issue.severity === 'warning' ? 'bg-[#f59e0b]' : 'bg-[#3b82f6]'
                               }`} />
                               <div>
-                                <h4 className="font-bold text-sm text-[#f1f5f9]">{issue.title}</h4>
-                                <code className="text-[10px] text-[#f1f5f9]/30 bg-[#0a0e17] px-1.5 py-0.5 rounded mt-1 inline-block">{issue.element}</code>
+                                <h4 className="font-bold text-sm text-[#0f172a]">{issue.title}</h4>
+                                <code className="text-[10px] text-[#94a3b8] bg-[#f8fafc] px-1.5 py-0.5 rounded mt-1 inline-block">{issue.element}</code>
                               </div>
                             </div>
-                            <ChevronDown className={`w-4 h-4 text-[#f1f5f9]/20 transition-transform shrink-0 ${expandedIssue === issue.id ? 'rotate-180' : ''}`} />
+                            <ChevronDown className={`w-4 h-4 text-[#94a3b8] transition-transform shrink-0 ${expandedIssue === issue.id ? 'rotate-180' : ''}`} />
                           </button>
 
                           <AnimatePresence>
@@ -1007,15 +1003,15 @@ export default function Dashboard() {
                                 transition={{ duration: 0.2 }}
                                 className="overflow-hidden"
                               >
-                                <div className="px-5 pb-5 border-t border-[#1e293b]/50 pt-4">
+                                <div className="px-5 pb-5 border-t border-[#e2e8f0] pt-4">
                                   <div className="space-y-4">
                                     <div>
-                                      <div className="text-[10px] font-black uppercase tracking-widest text-[#f1f5f9]/30 mb-1.5">Description</div>
-                                      <p className="text-sm text-[#f1f5f9]/60 leading-relaxed">{issue.description}</p>
+                                      <div className="text-[10px] font-black uppercase tracking-widest text-[#94a3b8] mb-1.5">Description</div>
+                                      <p className="text-sm text-[#475569] leading-relaxed">{issue.description}</p>
                                     </div>
-                                    <div className="bg-[#0a0e17] p-4 rounded-lg border border-[#1e293b]">
-                                      <div className="text-[10px] font-black uppercase tracking-widest text-[#06b6d4] mb-1.5">Suggested Fix</div>
-                                      <p className="text-sm font-mono text-[#f1f5f9]/80">{issue.fix}</p>
+                                    <div className="bg-[#f8fafc] p-4 rounded-lg border border-[#e2e8f0]">
+                                      <div className="text-[10px] font-black uppercase tracking-widest text-[#0f172a] mb-1.5">Suggested Fix</div>
+                                      <p className="text-sm font-mono text-[#0f172a]">{issue.fix}</p>
                                     </div>
                                   </div>
                                 </div>
@@ -1040,7 +1036,7 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-[#06b6d4] text-[#0a0e17] font-bold rounded-full shadow-2xl flex items-center gap-2"
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-[#0f172a] text-white font-bold rounded-full shadow-sm flex items-center gap-2"
           >
             <CheckCircle2 className="w-5 h-5" />
             Link copied to clipboard!
@@ -1061,17 +1057,17 @@ function RecentChecksList({ checks, onView, onDelete, compact }: {
 }) {
   if (checks.length === 0) {
     return (
-      <div className="bg-[#111827] border border-[#1e293b] rounded-2xl p-10 text-center">
-        <div className="w-14 h-14 bg-[#0a0e17] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#1e293b]">
-          <History className="w-7 h-7 text-[#f1f5f9]/15" />
+      <div className="bg-white border border-[#e2e8f0] shadow-sm rounded-2xl p-10 text-center">
+        <div className="w-14 h-14 bg-[#f8fafc] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#e2e8f0]">
+          <History className="w-7 h-7 text-[#94a3b8]" />
         </div>
         <h3 className="text-base font-bold mb-1.5">No checks yet</h3>
-        <p className="text-[#f1f5f9]/40 text-sm max-w-xs mx-auto mb-5">
+        <p className="text-[#94a3b8] text-sm max-w-xs mx-auto mb-5">
           Run your first i18n layout test to see results here.
         </p>
         <Link
           to="/app/new"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#06b6d4] hover:bg-[#0891b2] text-[#0a0e17] font-bold rounded-xl transition-all text-sm"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0f172a] hover:bg-[#1e293b] text-white font-bold rounded-xl transition-all text-sm"
         >
           <Plus className="w-4 h-4" />
           Start First Check
@@ -1087,18 +1083,18 @@ function RecentChecksList({ checks, onView, onDelete, compact }: {
           key={check.id}
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-[#111827] border border-[#1e293b] rounded-xl p-4 hover:border-[#1e293b]/80 transition-all group relative"
+          className="bg-white border border-[#e2e8f0] shadow-sm rounded-xl p-4 hover:border-[#e2e8f0]/80 transition-all group relative"
         >
           <button
             onClick={(e) => onDelete(check.id, e)}
-            className="absolute top-3 right-3 p-1.5 text-[#f1f5f9]/15 hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+            className="absolute top-3 right-3 p-1.5 text-[#94a3b8] hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg transition-all opacity-0 group-hover:opacity-100"
             title="Delete"
           >
             <Trash2 className="w-3.5 h-3.5" />
           </button>
 
           <div className="flex items-center gap-3 mb-3 pr-6">
-            <div className="w-8 h-8 bg-[#0a0e17] rounded-lg flex items-center justify-center border border-[#1e293b] shrink-0">
+            <div className="w-8 h-8 bg-[#f8fafc] rounded-lg flex items-center justify-center border border-[#e2e8f0] shrink-0">
               <img
                 src={`https://www.google.com/s2/favicons?domain=${check.url}&sz=64`}
                 alt=""
@@ -1107,8 +1103,8 @@ function RecentChecksList({ checks, onView, onDelete, compact }: {
               />
             </div>
             <div className="truncate flex-1">
-              <h4 className="font-bold text-sm text-[#f1f5f9] truncate">{check.url.replace(/^https?:\/\//, '')}</h4>
-              <span className="text-[10px] text-[#f1f5f9]/30">
+              <h4 className="font-bold text-sm text-[#0f172a] truncate">{check.url.replace(/^https?:\/\//, '')}</h4>
+              <span className="text-[10px] text-[#94a3b8]">
                 {new Date(check.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
               </span>
             </div>
@@ -1116,8 +1112,8 @@ function RecentChecksList({ checks, onView, onDelete, compact }: {
           </div>
 
           <div className="flex items-center gap-2 mb-3">
-            <span className="px-2 py-0.5 bg-[#06b6d4]/10 text-[#06b6d4] text-[10px] font-black uppercase rounded">{check.simulation}</span>
-            <div className="flex items-center gap-2 ml-auto text-[10px] text-[#f1f5f9]/30">
+            <span className="px-2 py-0.5 bg-[#0f172a]/10 text-[#0f172a] text-[10px] font-black uppercase rounded">{check.simulation}</span>
+            <div className="flex items-center gap-2 ml-auto text-[10px] text-[#94a3b8]">
               <span className="flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-[#ef4444] inline-block" /> {check.issues.critical}</span>
               <span className="flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-[#f59e0b] inline-block" /> {check.issues.warning}</span>
               <span className="flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] inline-block" /> {check.issues.info}</span>
@@ -1126,7 +1122,7 @@ function RecentChecksList({ checks, onView, onDelete, compact }: {
 
           <button
             onClick={() => onView(check)}
-            className="w-full py-2 bg-[#1e293b]/50 hover:bg-[#06b6d4] hover:text-[#0a0e17] text-[#f1f5f9]/60 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5"
+            className="w-full py-2 bg-[#f8fafc] hover:bg-[#0f172a] hover:text-white text-[#475569] text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 border border-[#e2e8f0]"
           >
             View Results <ArrowRight className="w-3 h-3" />
           </button>

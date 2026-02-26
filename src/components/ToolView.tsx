@@ -50,7 +50,7 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
 
   const startTest = async (targetUrl: string) => {
     if (!targetUrl) return;
-    
+
     // Basic validation
     let formattedUrl = targetUrl;
     if (!formattedUrl.startsWith('http://') && !formattedUrl.startsWith('https://')) {
@@ -63,7 +63,7 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
     }
 
     setLoadingState('launching');
-    
+
     // Simulate loading steps
     setTimeout(() => setLoadingState('loading'), 1500);
     setTimeout(() => setLoadingState('simulating'), 3500);
@@ -83,7 +83,7 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
   const handleDownloadReport = async () => {
     const element = document.getElementById('report-content');
     if (!element) return;
-    
+
     try {
       const canvas = await html2canvas(element);
       const imgData = canvas.toDataURL('image/png');
@@ -91,7 +91,7 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
       const imgProps = pdf.getImageProperties(imgData);
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      
+
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       pdf.save('i18n-report.pdf');
     } catch (err) {
@@ -130,23 +130,21 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0e17] text-[#f1f5f9] font-sans selection:bg-cyan-900 selection:text-cyan-100" id="report-content">
+    <div className="min-h-screen bg-white text-[#0f172a] font-sans selection:bg-[#0f172a]/10 selection:text-[#0f172a]" id="report-content">
       {/* Header */}
-      <header className="bg-[#111827] border-b border-[#1e293b] sticky top-0 z-40">
+      <header className="bg-white/80 backdrop-blur-md border-b border-[#e2e8f0] sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={onBack}>
-            <div className="bg-cyan-500/10 p-1.5 rounded-lg border border-cyan-500/20">
-              <Globe className="w-5 h-5 text-cyan-400" />
-            </div>
-            <span className="font-bold text-xl tracking-tight text-[#f1f5f9]">
-              i18n<span className="text-cyan-400">Check</span>.dev
+          <div className="flex items-center gap-1.5 cursor-pointer" onClick={onBack}>
+            <Globe className="w-5 h-5 text-[#06b6d4]" />
+            <span className="font-bold text-xl tracking-tight text-[#0f172a]">
+              <span className="text-[#06b6d4]">i18n</span>Check.dev
             </span>
           </div>
           <div className="flex items-center gap-4">
              <div className="text-sm text-[#94a3b8] hidden sm:block">
-               <span className="font-mono text-cyan-400">{usageCount}/3</span> free checks used
+               <span className="font-mono text-[#0f172a]">{usageCount}/3</span> free checks used
              </div>
-             <button onClick={onBack} className="text-sm font-medium text-[#94a3b8] hover:text-white transition-colors">
+             <button onClick={onBack} className="text-sm font-medium text-[#475569] hover:text-[#0f172a] transition-colors">
                Back to Home
              </button>
           </div>
@@ -155,14 +153,14 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Control Panel */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#111827] rounded-2xl shadow-lg border border-[#1e293b] p-6 mb-8"
+          className="bg-white rounded-2xl shadow-sm border border-[#e2e8f0] p-6 mb-8"
         >
           <form onSubmit={(e) => { e.preventDefault(); startTest(url); }} className="flex flex-col lg:flex-row gap-6 items-start lg:items-end">
             <div className="flex-1 w-full">
-              <label htmlFor="url" className="block text-sm font-medium text-[#94a3b8] mb-2">
+              <label htmlFor="url" className="block text-sm font-medium text-[#0f172a] mb-2">
                 Website URL
               </label>
               <div className="relative group">
@@ -172,21 +170,21 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
                   placeholder="example.com"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
-                  className="w-full pl-4 pr-12 py-3 bg-[#0a0e17] border border-[#1e293b] rounded-xl focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 outline-none transition-all text-white placeholder:text-slate-700"
+                  className="w-full pl-4 pr-12 py-3 bg-white border border-[#e2e8f0] rounded-xl focus:ring-1 focus:ring-[#0f172a]/20 focus:border-[#0f172a] outline-none transition-all text-[#0f172a] placeholder:text-[#94a3b8]"
                 />
                 <div className="absolute right-2 top-1/2 -translate-y-1/2">
                   <button
                     type="button"
                     onClick={() => setShowPresets(!showPresets)}
-                    className="p-1.5 text-[#64748b] hover:text-cyan-400 hover:bg-cyan-500/10 rounded-lg transition-colors"
+                    className="p-1.5 text-[#94a3b8] hover:text-[#0f172a] hover:bg-[#f8fafc] rounded-lg transition-colors"
                   >
                     <ChevronDown className="w-5 h-5" />
                   </button>
                 </div>
-                
+
                 {showPresets && (
-                  <div className="absolute top-full right-0 mt-2 w-64 bg-[#111827] rounded-xl shadow-xl border border-[#1e293b] overflow-hidden z-20">
-                    <div className="px-4 py-2 bg-[#0a0e17] border-b border-[#1e293b] text-xs font-semibold text-[#64748b] uppercase tracking-wider">
+                  <div className="absolute top-full right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-[#e2e8f0] overflow-hidden z-20">
+                    <div className="px-4 py-2 bg-[#f8fafc] border-b border-[#e2e8f0] text-xs font-semibold text-[#94a3b8] uppercase tracking-wider">
                       Quick Test Presets
                     </div>
                     {presets.map((preset) => (
@@ -194,7 +192,7 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
                         key={preset.url}
                         type="button"
                         onClick={() => { setUrl(preset.url); setShowPresets(false); }}
-                        className="w-full text-left px-4 py-3 text-sm text-[#94a3b8] hover:bg-[#1e293b] hover:text-white transition-colors flex items-center justify-between group/item"
+                        className="w-full text-left px-4 py-3 text-sm text-[#475569] hover:bg-[#f8fafc] hover:text-[#0f172a] transition-colors flex items-center justify-between group/item"
                       >
                         <span>{preset.name}</span>
                         <ArrowRight className="w-3 h-3 opacity-0 group-hover/item:opacity-100 transition-opacity" />
@@ -206,14 +204,14 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
             </div>
 
             <div className="w-full lg:w-72">
-              <label className="block text-sm font-medium text-[#94a3b8] mb-2">
+              <label className="block text-sm font-medium text-[#0f172a] mb-2">
                 Simulation Mode
               </label>
               <div className="relative">
                 <button
                   type="button"
                   onClick={() => setShowModeDropdown(!showModeDropdown)}
-                  className="w-full flex items-center justify-between px-4 py-3 bg-[#0a0e17] border border-[#1e293b] rounded-xl hover:border-[#334155] transition-all text-left"
+                  className="w-full flex items-center justify-between px-4 py-3 bg-white border border-[#e2e8f0] rounded-xl hover:border-[#94a3b8] transition-all text-left"
                 >
                   <div className="flex items-center gap-2">
                     {(() => {
@@ -221,17 +219,17 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
                       const Icon = selectedMode.icon;
                       return (
                         <>
-                          <Icon className="w-4 h-4 text-cyan-400" />
-                          <span className="font-medium text-[#f1f5f9]">{selectedMode.name}</span>
+                          <Icon className="w-4 h-4 text-[#0f172a]" />
+                          <span className="font-medium text-[#0f172a]">{selectedMode.name}</span>
                         </>
                       );
                     })()}
                   </div>
-                  <ChevronDown className={`w-4 h-4 text-[#64748b] transition-transform ${showModeDropdown ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 text-[#94a3b8] transition-transform ${showModeDropdown ? 'rotate-180' : ''}`} />
                 </button>
 
                 {showModeDropdown && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-[#111827] rounded-xl shadow-xl border border-[#1e293b] overflow-hidden z-20 max-h-80 overflow-y-auto">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-[#e2e8f0] overflow-hidden z-20 max-h-80 overflow-y-auto">
                     {modes.map((m) => (
                       <button
                         key={m.id}
@@ -240,20 +238,20 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
                           setMode(m.id);
                           setShowModeDropdown(false);
                         }}
-                        className={`w-full flex items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-[#1e293b] ${
-                          mode === m.id ? 'bg-cyan-500/10' : ''
+                        className={`w-full flex items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-[#f8fafc] ${
+                          mode === m.id ? 'bg-[#f8fafc]' : ''
                         }`}
                       >
-                        <m.icon className={`w-4 h-4 mt-0.5 ${mode === m.id ? 'text-cyan-400' : 'text-[#64748b]'}`} />
+                        <m.icon className={`w-4 h-4 mt-0.5 ${mode === m.id ? 'text-[#0f172a]' : 'text-[#94a3b8]'}`} />
                         <div>
-                          <div className={`text-sm font-medium ${mode === m.id ? 'text-white' : 'text-[#94a3b8]'}`}>
+                          <div className={`text-sm font-medium ${mode === m.id ? 'text-[#0f172a]' : 'text-[#475569]'}`}>
                             {m.name}
                           </div>
-                          <div className="text-xs text-[#64748b] mt-0.5">
+                          <div className="text-xs text-[#94a3b8] mt-0.5">
                             {m.desc}
                           </div>
                         </div>
-                        {mode === m.id && <Check className="w-4 h-4 text-cyan-400 ml-auto mt-0.5" />}
+                        {mode === m.id && <Check className="w-4 h-4 text-[#0f172a] ml-auto mt-0.5" />}
                       </button>
                     ))}
                   </div>
@@ -270,7 +268,7 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
                     setOriginalUrl(null);
                     setUrl('');
                   }}
-                  className="px-6 py-3 bg-[#1e293b] hover:bg-[#334155] text-white font-medium rounded-xl transition-colors shadow-sm"
+                  className="px-6 py-3 bg-[#f8fafc] hover:bg-[#e2e8f0] text-[#0f172a] font-medium rounded-xl transition-colors border border-[#e2e8f0]"
                 >
                   Clear
                 </button>
@@ -278,7 +276,7 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
               <button
                 type="submit"
                 disabled={!url || loadingState !== 'idle'}
-                className="flex-1 px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-cyan-900/20"
+                className="flex-1 px-8 py-3 bg-[#0f172a] hover:bg-[#1e293b] text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
               >
                 {loadingState !== 'idle' ? (
                   <RefreshCw className="w-5 h-5 animate-spin" />
@@ -296,19 +294,19 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
         {/* Loading State Overlay */}
         <AnimatePresence>
           {loadingState !== 'idle' && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-[#0a0e17]/90 backdrop-blur-sm z-50 flex items-center justify-center"
+              className="fixed inset-0 bg-white/90 backdrop-blur-sm z-50 flex items-center justify-center"
             >
               <div className="text-center max-w-md w-full px-6">
                 <div className="relative w-24 h-24 mx-auto mb-8">
-                  <div className="absolute inset-0 rounded-full border-4 border-[#1e293b]"></div>
-                  <div className="absolute inset-0 rounded-full border-4 border-t-cyan-500 animate-spin"></div>
-                  <Globe className="absolute inset-0 m-auto w-10 h-10 text-cyan-400 animate-pulse" />
+                  <div className="absolute inset-0 rounded-full border-4 border-[#e2e8f0]"></div>
+                  <div className="absolute inset-0 rounded-full border-4 border-t-[#0f172a] animate-spin"></div>
+                  <Globe className="absolute inset-0 m-auto w-10 h-10 text-[#0f172a] animate-pulse" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">
+                <h3 className="text-2xl font-bold text-[#0f172a] mb-2">
                   {loadingState === 'launching' && "Launching browser..."}
                   {loadingState === 'loading' && "Loading page..."}
                   {loadingState === 'simulating' && `Applying ${mode} simulation...`}
@@ -316,11 +314,11 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
                   {loadingState === 'generating' && "Generating results..."}
                 </h3>
                 <p className="text-[#94a3b8] mb-6">This usually takes 5-15 seconds.</p>
-                <div className="h-2 bg-[#1e293b] rounded-full overflow-hidden">
-                  <motion.div 
-                    className="h-full bg-cyan-500"
+                <div className="h-2 bg-[#e2e8f0] rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-[#0f172a]"
                     initial={{ width: "0%" }}
-                    animate={{ 
+                    animate={{
                       width: loadingState === 'launching' ? "20%" :
                              loadingState === 'loading' ? "40%" :
                              loadingState === 'simulating' ? "60%" :
@@ -339,11 +337,11 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
           <div className="space-y-8">
             {/* Toolbar */}
             <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="flex bg-[#111827] rounded-lg p-1 border border-[#1e293b]">
+              <div className="flex bg-[#f8fafc] rounded-lg p-1 border border-[#e2e8f0]">
                 <button
                   onClick={() => setViewMode('single')}
                   className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
-                    viewMode === 'single' ? 'bg-[#1e293b] text-white' : 'text-[#94a3b8] hover:text-white'
+                    viewMode === 'single' ? 'bg-white text-[#0f172a] shadow-sm' : 'text-[#94a3b8] hover:text-[#0f172a]'
                   }`}
                 >
                   <Smartphone className="w-4 h-4" />
@@ -352,7 +350,7 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
                 <button
                   onClick={() => setViewMode('side-by-side')}
                   className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
-                    viewMode === 'side-by-side' ? 'bg-[#1e293b] text-white' : 'text-[#94a3b8] hover:text-white'
+                    viewMode === 'side-by-side' ? 'bg-white text-[#0f172a] shadow-sm' : 'text-[#94a3b8] hover:text-[#0f172a]'
                   }`}
                 >
                   <Columns className="w-4 h-4" />
@@ -361,11 +359,11 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
               </div>
 
               <div className="flex gap-3">
-                <button onClick={handleShare} className="px-4 py-2 bg-[#111827] hover:bg-[#1e293b] border border-[#1e293b] rounded-lg text-sm font-medium text-white flex items-center gap-2 transition-colors">
+                <button onClick={handleShare} className="px-4 py-2 bg-white hover:bg-[#f8fafc] border border-[#e2e8f0] rounded-lg text-sm font-medium text-[#0f172a] flex items-center gap-2 transition-colors">
                   <Share2 className="w-4 h-4" />
                   Share
                 </button>
-                <button onClick={handleDownloadReport} className="px-4 py-2 bg-[#111827] hover:bg-[#1e293b] border border-[#1e293b] rounded-lg text-sm font-medium text-white flex items-center gap-2 transition-colors">
+                <button onClick={handleDownloadReport} className="px-4 py-2 bg-white hover:bg-[#f8fafc] border border-[#e2e8f0] rounded-lg text-sm font-medium text-[#0f172a] flex items-center gap-2 transition-colors">
                   <Download className="w-4 h-4" />
                   Download Report
                 </button>
@@ -373,23 +371,23 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
             </div>
 
             {/* Preview Container */}
-            <div className={`bg-[#0a0e17] border border-[#1e293b] overflow-hidden flex flex-col transition-all duration-300 ${
+            <div className={`bg-white border border-[#e2e8f0] overflow-hidden flex flex-col transition-all duration-300 ${
               isMaximized ? 'fixed inset-0 z-50 rounded-none' : 'relative h-[800px] rounded-2xl'
             }`}>
-              <div className="bg-[#111827] border-b border-[#1e293b] px-4 py-2 flex items-center justify-between shrink-0">
+              <div className="bg-[#f8fafc] border-b border-[#e2e8f0] px-4 py-2 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-[#334155]"></div>
-                    <div className="w-3 h-3 rounded-full bg-[#334155]"></div>
-                    <div className="w-3 h-3 rounded-full bg-[#334155]"></div>
+                    <div className="w-3 h-3 rounded-full bg-[#ef4444]/60"></div>
+                    <div className="w-3 h-3 rounded-full bg-[#f59e0b]/60"></div>
+                    <div className="w-3 h-3 rounded-full bg-[#22c55e]/60"></div>
                   </div>
-                  <div className="ml-4 px-3 py-1 bg-[#0a0e17] rounded-md text-xs text-[#94a3b8] font-mono border border-[#1e293b] max-w-md truncate">
+                  <div className="ml-4 px-3 py-1 bg-white rounded-md text-xs text-[#94a3b8] font-mono border border-[#e2e8f0] max-w-md truncate">
                     {url}
                   </div>
                 </div>
                 <button
                   onClick={() => setIsMaximized(!isMaximized)}
-                  className="p-1.5 hover:bg-[#1e293b] rounded-md text-[#94a3b8] transition-colors"
+                  className="p-1.5 hover:bg-[#e2e8f0] rounded-md text-[#94a3b8] hover:text-[#475569] transition-colors"
                 >
                   {isMaximized ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
                 </button>
@@ -397,7 +395,7 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
 
               <div className="flex-1 relative w-full h-full flex">
                 {viewMode === 'side-by-side' && originalUrl && (
-                  <div className="w-1/2 h-full border-r border-[#1e293b] relative">
+                  <div className="w-1/2 h-full border-r border-[#e2e8f0] relative">
                     <div className="absolute top-2 left-2 z-10 bg-black/50 backdrop-blur text-white text-xs px-2 py-1 rounded">Original</div>
                     <iframe
                       ref={originalIframeRef}
@@ -409,7 +407,7 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
                   </div>
                 )}
                 <div className={`${viewMode === 'side-by-side' ? 'w-1/2' : 'w-full'} h-full relative`}>
-                   <div className="absolute top-2 left-2 z-10 bg-cyan-900/80 backdrop-blur text-cyan-100 text-xs px-2 py-1 rounded border border-cyan-500/30">
+                   <div className="absolute top-2 left-2 z-10 bg-[#0f172a]/80 backdrop-blur text-white text-xs px-2 py-1 rounded">
                      {modes.find(m => m.id === mode)?.name}
                    </div>
                   <iframe
@@ -425,23 +423,23 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
             </div>
 
             {/* Issue Detection Panel */}
-            <div className="bg-[#111827] rounded-2xl border border-[#1e293b] p-6">
+            <div className="bg-white rounded-2xl border border-[#e2e8f0] shadow-sm p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-white">Detected Issues</h3>
+                <h3 className="text-xl font-bold text-[#0f172a]">Detected Issues</h3>
                 <div className="flex gap-3 text-sm">
-                  <span className="flex items-center gap-1.5 text-red-400"><AlertCircle className="w-4 h-4" /> 2 Critical</span>
-                  <span className="flex items-center gap-1.5 text-yellow-400"><AlertTriangle className="w-4 h-4" /> 1 Warning</span>
-                  <span className="flex items-center gap-1.5 text-blue-400"><Info className="w-4 h-4" /> 1 Info</span>
+                  <span className="flex items-center gap-1.5 text-[#ef4444]"><AlertCircle className="w-4 h-4" /> 2 Critical</span>
+                  <span className="flex items-center gap-1.5 text-[#f59e0b]"><AlertTriangle className="w-4 h-4" /> 1 Warning</span>
+                  <span className="flex items-center gap-1.5 text-[#3b82f6]"><Info className="w-4 h-4" /> 1 Info</span>
                 </div>
               </div>
-              
+
               <div className="space-y-4">
                 {mockIssues.map((issue, i) => (
-                  <div key={i} className="bg-[#0a0e17] border border-[#1e293b] rounded-xl p-4 flex gap-4 items-start">
+                  <div key={i} className="bg-[#f8fafc] border border-[#e2e8f0] rounded-xl p-4 flex gap-4 items-start">
                     <div className={`mt-1 flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center border ${
-                      issue.severity === 'critical' ? 'bg-red-500/10 border-red-500/20 text-red-400' :
-                      issue.severity === 'warning' ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400' :
-                      'bg-blue-500/10 border-blue-500/20 text-blue-400'
+                      issue.severity === 'critical' ? 'bg-[#ef4444]/10 border-[#ef4444]/20 text-[#ef4444]' :
+                      issue.severity === 'warning' ? 'bg-[#f59e0b]/10 border-[#f59e0b]/20 text-[#f59e0b]' :
+                      'bg-[#3b82f6]/10 border-[#3b82f6]/20 text-[#3b82f6]'
                     }`}>
                       {issue.severity === 'critical' ? <XCircle className="w-4 h-4" /> :
                        issue.severity === 'warning' ? <AlertTriangle className="w-4 h-4" /> :
@@ -449,11 +447,11 @@ export default function ToolView({ initialUrl, onBack }: ToolViewProps) {
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-bold text-white">{issue.title}</h4>
-                        <code className="text-xs bg-[#1e293b] px-1.5 py-0.5 rounded text-[#94a3b8] font-mono">{issue.element}</code>
+                        <h4 className="font-bold text-[#0f172a]">{issue.title}</h4>
+                        <code className="text-xs bg-white px-1.5 py-0.5 rounded text-[#94a3b8] font-mono border border-[#e2e8f0]">{issue.element}</code>
                       </div>
-                      <p className="text-sm text-[#94a3b8] mb-2">{issue.desc}</p>
-                      <div className="text-xs text-[#64748b] flex items-center gap-1">
+                      <p className="text-sm text-[#475569] mb-2">{issue.desc}</p>
+                      <div className="text-xs text-[#94a3b8] flex items-center gap-1">
                         <span className="font-semibold">Fix:</span> Add overflow: hidden; or use min-width.
                       </div>
                     </div>

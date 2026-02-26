@@ -5,23 +5,22 @@
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-  
+
   --color-brand-cyan: #06b6d4;
   --color-brand-cyan-hover: #0891b2;
-  --color-dark-bg: #0a0e17;
-  --color-dark-card: #111827;
-  --color-dark-border: #1e293b;
-  --color-text-primary: #f1f5f9;
-  --color-text-secondary: #94a3b8;
+  --color-dark-bg: #ffffff;
+  --color-dark-card: #ffffff;
+  --color-dark-border: #e2e8f0;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
 }
 
 body {
-  background-color: var(--color-dark-bg);
-  color: var(--color-text-primary);
+  background-color: #ffffff;
+  color: #0f172a;
   font-family: var(--font-sans);
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
 }
-
