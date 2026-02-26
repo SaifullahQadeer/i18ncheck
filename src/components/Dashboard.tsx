@@ -26,7 +26,7 @@ interface CheckResult {
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 
-const MAX_FREE_CHECKS = 3;
+const MAX_FREE_CHECKS = 5;
 
 const CHART_COLORS = {
   cyan: '#06b6d4',

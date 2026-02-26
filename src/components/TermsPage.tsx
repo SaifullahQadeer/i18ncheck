@@ -153,7 +153,7 @@ export default function TermsPage() {
                       <span className="text-[#06b6d4] mr-2">5.</span>Free and Paid Plans
                     </h2>
                     <ul className="list-disc list-inside space-y-2 text-[#f1f5f9]/60">
-                      <li>Free tier: Limited to 3 checks per day with restricted features.</li>
+                      <li>Free tier: Limited to 5 checks per day with restricted features.</li>
                       <li>Paid plans (Starter, Pro, Team): Provide additional checks, features, and support as described on our Pricing page.</li>
                       <li>Prices may change with 30 days notice. Existing subscriptions will be honored at the current rate until renewal.</li>
                     </ul>
