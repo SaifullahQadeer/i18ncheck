@@ -180,7 +180,15 @@ export default function Dashboard() {
   const [showToast, setShowToast] = useState(false);
   const [recentChecks, setRecentChecks] = useState<CheckResult[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [usageCount, setUsageCount] = useState(2);
+  const [usageCount, setUsageCount] = useState(() => {
+    const saved = localStorage.getItem('i18n_usage');
+    if (saved) {
+      const { count, date } = JSON.parse(saved);
+      const today = new Date().toDateString();
+      if (date === today) return count;
+    }
+    return 0;
+  });
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -255,6 +263,13 @@ export default function Dashboard() {
       setRecentChecks(JSON.parse(saved));
     }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('i18n_usage', JSON.stringify({
+      count: usageCount,
+      date: new Date().toDateString()
+    }));
+  }, [usageCount]);
 
   useEffect(() => {
     if (isLoading) {
