@@ -1,5 +1,5 @@
 {
-  "name": "i18nCheck.dev",
-  "description": "An internationalization (i18n) layout stress-testing tool using pseudo-localization.",
+  "name": "i18nCheck",
+  "description": "Does Your Website Break in Other Languages? Simulate German text expansion, Arabic RTL flipping, and CJK characters. Catch i18n layout bugs instantly.",
   "requestFramePermissions": []
 }
